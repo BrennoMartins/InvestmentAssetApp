@@ -1,0 +1,23 @@
+springdoc:
+    api-docs:
+        enabled: true
+    swagger-ui:
+        enabled: true
+        path: asset/swagger-ui.html
+management:
+    endpoints:
+        web:
+            exposure:
+                include: "*"
+spring:
+    datasource:
+        url: jdbc:postgresql://localhost:5432/finance
+        driver-class-name: org.postgresql.Driver
+        username: usuario
+        password: 1234
+        platform: org.hibernate.dialect.PostgreSQLDialect
+
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        hibernate:
+            ddl-auto: update
