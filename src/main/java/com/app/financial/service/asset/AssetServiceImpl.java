@@ -33,10 +33,12 @@ public class AssetServiceImpl implements IAssetCalculator{
     }
 
     public void addAssent(Asset asset) {
+        asset.setQuantity(asset.getQuantity().setScale(8, RoundingMode.HALF_UP));
         assetRepository.addAsset(calculatedValues(asset));
     }
 
     public void updateAasset(Asset asset) {
+        asset.setQuantity(asset.getQuantity().setScale(8, RoundingMode.HALF_UP));
         assetRepository.updateAsset(calculatedValues(asset));
     }
 
@@ -53,8 +55,8 @@ public class AssetServiceImpl implements IAssetCalculator{
     }
 
     @Override
-    public BigDecimal valueCalculate(Integer quantity, BigDecimal quotation) {
-        return new BigDecimal(quantity).multiply(quotation);
+    public BigDecimal valueCalculate(BigDecimal quantity, BigDecimal quotation) {
+        return quantity.multiply(quotation);
     }
 
     public Asset calculatedValues(Asset asset){

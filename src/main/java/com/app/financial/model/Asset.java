@@ -28,8 +28,8 @@ public class Asset {
 
     //@JsonIgnore
     @NotNull(message = "Quantity asset not be null")
-    @Column(name="quantity_asset")
-    private Integer quantity;
+    @Column(name="quantity_asset", precision = 20, scale = 8, nullable = false)
+    private BigDecimal quantity;
 
     @Column(name="value_avarage_price_asset")
     private BigDecimal averagePrice;
@@ -50,7 +50,7 @@ public class Asset {
     @ManyToOne
     private AssetCategory assetCategory;
 
-    public Asset(Long id, String asset, Integer quantity, BigDecimal averagePrice, BigDecimal quotation, BigDecimal difference, BigDecimal index, BigDecimal value) {
+    public Asset(Long id, String asset, BigDecimal quantity, BigDecimal averagePrice, BigDecimal quotation, BigDecimal difference, BigDecimal index, BigDecimal value) {
         this.id = id;
         this.asset = asset;
         this.quantity = quantity;
