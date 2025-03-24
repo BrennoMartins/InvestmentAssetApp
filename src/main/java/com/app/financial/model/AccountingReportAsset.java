@@ -1,21 +1,18 @@
 package com.app.financial.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class AccountingReportAsset {
 
-    private String assetCategory;
+    private AssetCategory assetCategoryId;
     private BigDecimal value;
 
-    public AccountingReportAsset(String assetCategory, BigDecimal value) {
-        this.assetCategory = assetCategory;
-        this.value = value;
-    }
+
 }
