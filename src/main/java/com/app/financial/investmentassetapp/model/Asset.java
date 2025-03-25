@@ -1,4 +1,4 @@
-package com.app.financial.model;
+package com.app.financial.investmentassetapp.model;
 
 
 import jakarta.persistence.*;

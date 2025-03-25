@@ -1,4 +1,4 @@
-package com.app.financial.service.asset;
+package com.app.financial.investmentassetapp.service.asset;
 
 import java.math.BigDecimal;
 

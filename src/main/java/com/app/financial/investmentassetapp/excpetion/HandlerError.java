@@ -1,4 +1,4 @@
-package com.app.financial.excpetion;
+package com.app.financial.investmentassetapp.excpetion;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

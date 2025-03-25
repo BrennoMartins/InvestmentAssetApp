@@ -1,8 +1,7 @@
-package com.app.financial.controller;
+package com.app.financial.investmentassetapp.controller;
 
-import com.app.financial.model.AccountingReportAsset;
-import com.app.financial.service.asset.AccountingReportAssetService;
-import jakarta.persistence.Tuple;
+import com.app.financial.investmentassetapp.model.AccountingReportAsset;
+import com.app.financial.investmentassetapp.service.asset.AccountingReportAssetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/asset/report")

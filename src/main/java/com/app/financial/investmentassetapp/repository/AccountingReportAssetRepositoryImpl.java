@@ -1,11 +1,9 @@
-package com.app.financial.repository;
+package com.app.financial.investmentassetapp.repository;
 
-import jakarta.persistence.Tuple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class AccountingReportAssetRepositoryImpl {

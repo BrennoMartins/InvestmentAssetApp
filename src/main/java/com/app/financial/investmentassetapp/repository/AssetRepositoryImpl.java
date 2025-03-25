@@ -1,6 +1,6 @@
-package com.app.financial.repository;
+package com.app.financial.investmentassetapp.repository;
 
-import com.app.financial.model.Asset;
+import com.app.financial.investmentassetapp.model.Asset;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

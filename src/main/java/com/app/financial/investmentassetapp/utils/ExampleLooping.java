@@ -1,4 +1,4 @@
-package com.app.financial.utils;
+package com.app.financial.investmentassetapp.utils;
 
 public class ExampleLooping {
 
