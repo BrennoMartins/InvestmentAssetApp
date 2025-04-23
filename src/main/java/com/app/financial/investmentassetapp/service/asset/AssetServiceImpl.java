@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AssetServiceImpl implements IAssetCalculator{
+public class AssetServiceImpl{
 
     @Autowired
     private AssetRepositoryImpl assetRepository;
@@ -34,36 +34,13 @@ public class AssetServiceImpl implements IAssetCalculator{
 
     public void addAssent(Asset asset) {
         asset.setQuantity(asset.getQuantity().setScale(8, RoundingMode.HALF_UP));
-        assetRepository.addAsset(calculatedValues(asset));
+        assetRepository.addAsset(new AssetCalculatorImpl().calculatedValues(asset));
     }
 
     public void updateAasset(Asset asset) {
         asset.setQuantity(asset.getQuantity().setScale(8, RoundingMode.HALF_UP));
-        assetRepository.updateAsset(calculatedValues(asset));
+        assetRepository.updateAsset(new AssetCalculatorImpl().calculatedValues(asset));
     }
 
-
-    @Override
-    public BigDecimal differenceCalculate(BigDecimal quotation, BigDecimal averagePrice) {
-        return quotation.subtract(averagePrice);
-    }
-
-    @Override
-    public BigDecimal indexCalculate(BigDecimal quotation, BigDecimal averagePrice) {
-        BigDecimal percent = quotation.divide(averagePrice, 2, RoundingMode.HALF_UP).subtract(BigDecimal.ONE);
-        return percent.multiply(new BigDecimal("100"));
-    }
-
-    @Override
-    public BigDecimal valueCalculate(BigDecimal quantity, BigDecimal quotation) {
-        return quantity.multiply(quotation);
-    }
-
-    public Asset calculatedValues(Asset asset){
-        asset.setDifference(differenceCalculate(asset.getQuotation(), asset.getAveragePrice()));
-        asset.setIndex(indexCalculate(asset.getQuotation(), asset.getAveragePrice()));
-        asset.setValue(valueCalculate(asset.getQuantity(), asset.getQuotation()));
-        return asset;
-    }
 
 }

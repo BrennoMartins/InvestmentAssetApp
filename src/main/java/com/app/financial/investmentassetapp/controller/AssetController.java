@@ -58,7 +58,6 @@ public class AssetController {
     public ResponseEntity<Asset> addAssent(@Valid @RequestBody Asset asset){
         assetServiceImpl.addAssent(asset);
         return ResponseEntity.created(null).build();
-
     }
 
     @PutMapping("/{id}")
