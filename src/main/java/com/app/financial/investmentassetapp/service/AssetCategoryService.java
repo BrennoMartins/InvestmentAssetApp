@@ -1,7 +1,7 @@
-package com.app.financial.service;
+package com.app.financial.investmentassetapp.service;
 
-import com.app.financial.model.AssetCategory;
-import com.app.financial.repository.AssetCategoryRepositoryImpl;
+import com.app.financial.investmentassetapp.model.AssetCategory;
+import com.app.financial.investmentassetapp.repository.AssetCategoryRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

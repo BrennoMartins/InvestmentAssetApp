@@ -1,6 +1,6 @@
-package com.app.financial.repository;
+package com.app.financial.investmentassetapp.repository;
 
-import com.app.financial.model.AssetCategory;
+import com.app.financial.investmentassetapp.model.AssetCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

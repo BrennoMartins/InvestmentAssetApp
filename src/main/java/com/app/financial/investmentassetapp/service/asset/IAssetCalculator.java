@@ -1,4 +1,4 @@
-package com.app.financial.service.asset;
+package com.app.financial.investmentassetapp.service.asset;
 
 import java.math.BigDecimal;
 
@@ -8,5 +8,5 @@ public interface IAssetCalculator {
 
     BigDecimal indexCalculate(BigDecimal quotation, BigDecimal averagePrice);
 
-    BigDecimal valueCalculate(Integer quantity, BigDecimal quotation);
+    BigDecimal valueCalculate(BigDecimal quantity, BigDecimal quotation);
 }

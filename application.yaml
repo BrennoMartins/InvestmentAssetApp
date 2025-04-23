@@ -21,3 +21,6 @@ spring:
         database-platform: org.hibernate.dialect.PostgreSQLDialect
         hibernate:
             ddl-auto: update
+
+    profiles:
+        active: dev

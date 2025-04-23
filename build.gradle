@@ -37,6 +37,7 @@ dependencies {
 
     // Driver do banco de dados (caso necessário)
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+
 }
 
 test {

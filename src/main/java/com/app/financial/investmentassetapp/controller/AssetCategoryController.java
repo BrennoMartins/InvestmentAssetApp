@@ -1,10 +1,10 @@
-package com.app.financial.controller;
+package com.app.financial.investmentassetapp.controller;
 
 
-import com.app.financial.excpetion.AssetNotFoundException;
-import com.app.financial.model.Asset;
-import com.app.financial.model.AssetCategory;
-import com.app.financial.service.AssetCategoryService;
+import com.app.financial.investmentassetapp.excpetion.AssetNotFoundException;
+import com.app.financial.investmentassetapp.model.Asset;
+import com.app.financial.investmentassetapp.model.AssetCategory;
+import com.app.financial.investmentassetapp.service.AssetCategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

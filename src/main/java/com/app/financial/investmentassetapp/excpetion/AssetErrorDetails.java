@@ -1,4 +1,4 @@
-package com.app.financial.excpetion;
+package com.app.financial.investmentassetapp.excpetion;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
