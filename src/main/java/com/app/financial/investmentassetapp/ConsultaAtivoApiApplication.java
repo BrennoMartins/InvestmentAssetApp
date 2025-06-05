@@ -23,4 +23,10 @@ public class ConsultaAtivoApiApplication {
     public static void main(String[] args) {
         SpringApplication.run(ConsultaAtivoApiApplication.class, args);
     }
+
+    //TODO INTEGRAÇÃO COM API DA COTAÇÃO DE CONSULTA
+    //TODO INTEGRAÇÃO COM API DA COTAÇÃO DE UPDATE
+    //TODO CRIAR METODO DE ATUALIZAÇÃO DA COTAÇÃO
+    //TODO CORRIGIR O DOCKER FILE
+    //TODO MONTAR O PROPERTIES
 }
