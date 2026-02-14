@@ -54,7 +54,7 @@ public class Asset {
     private Bank bank;
 
     @ManyToOne
-    private TypeAsset type;
+    private AssetType type;
 
     @Column(name="monthly_contribution")
     private BigDecimal monthlyContribution;

@@ -1,5 +1,6 @@
 package com.app.financial.investmentassetapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -10,13 +11,18 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Bank {
+public class AssetType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    private String bank;
+    private String name;
+
+    @OneToMany(mappedBy = "assetType")
+    @JsonIgnore
+    private java.util.List<AssetSubType> subTypes;
 
 }
+

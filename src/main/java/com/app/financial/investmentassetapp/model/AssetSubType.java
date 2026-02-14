@@ -10,13 +10,18 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Bank {
+public class AssetSubType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    private String bank;
+    private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "asset_type_id")
+    private AssetType assetType;
 
 }
+
