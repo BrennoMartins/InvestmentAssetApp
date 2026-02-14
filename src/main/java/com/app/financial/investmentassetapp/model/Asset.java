@@ -50,6 +50,30 @@ public class Asset {
     @ManyToOne
     private AssetCategory assetCategory;
 
+    @ManyToOne
+    private Bank bank;
+
+    @ManyToOne
+    private AssetType type;
+
+    @Column(name="monthly_contribution")
+    private BigDecimal monthlyContribution;
+
+    @Column(name="value_previous_month")
+    private BigDecimal valuePreviousMonth;
+
+    @Column(name="percent_monthly_profit")
+    private BigDecimal percentMonthlyProfit;
+
+    @Column(name="value_monthly_profit")
+    private BigDecimal valueMonthlyProfit;
+
+    @Column(name="maturation")
+    private BigDecimal maturation;
+
+    @Column(name="percent_wallet")
+    private BigDecimal percentWallet;
+
     public Asset(Long id, String asset, BigDecimal quantity, BigDecimal averagePrice, BigDecimal quotation, BigDecimal difference, BigDecimal index, BigDecimal value) {
         this.id = id;
         this.asset = asset;
@@ -61,3 +85,6 @@ public class Asset {
         this.value = value;
     }
 }
+
+
+
