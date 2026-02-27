@@ -72,26 +72,161 @@ The API is available at `http://localhost:8080` (default port).
 
 ## API overview
 
-All asset-related endpoints are under the `/asset` base path.
+All asset-related endpoints are under the `/asset` base path. Below are the main resources and their endpoints (new and existing):
 
-| Resource        | Base path                | List | Get by id | Get by query      | Create | Update | Delete |
-|----------------|---------------------------|------|-----------|-------------------|--------|--------|--------|
-| Assets         | `GET/POST/PUT/DELETE /asset` | ✓    | `/{id}`   | `/query?asset=`   | ✓      | `PUT /{id}` | ✓  |
-| Banks          | `/asset/bank`             | ✓    | `/{id}`   | `/query?bank=`    | ✓      | —      | ✓      |
-| Asset types    | `/asset/asset-type`      | ✓    | `/{id}`   | `/query?name=`    | ✓      | —      | ✓      |
-| Asset sub-types| `/asset/asset-sub-type`  | ✓    | `/{id}`   | `/query?name=`    | ✓      | —      | ✓      |
-| Categories     | `/asset/category`        | ✓    | `/{id}`   | `/query?name=`    | ✓      | —      | ✓      |
-| Reports        | `/asset/report`          | —    | —         | —                 | —      | —      | —      |
-
-**Reports**
-
-- `GET /asset/report/accounting` — Returns the list of accounting report assets (raw data).
-
-**Asset sub-types (extra)**
-
-- `GET /asset/asset-sub-type/by-asset-type/{assetTypeId}` — List sub-types for a given asset type.
+| Resource                 | Base path                       | Methods & Notes |
+|--------------------------|----------------------------------|-----------------|
+| Assets                   | `/asset`                         | GET `/` (list), GET `/{id}`, GET `/query?asset=NAME`, POST `/`, PUT `/{id}`, DELETE `/{id}` |
+| Banks                    | `/asset/bank`                    | GET `/` (list), GET `/{id}`, GET `/query?bank=NAME`, POST `/`, DELETE `/{id}` |
+| Asset types (AssetType)  | `/asset/asset-type`              | GET `/` (list), GET `/{id}`, GET `/query?name=NAME`, POST `/`, DELETE `/{id}` |
+| Asset sub-types (AssetSubType) | `/asset/asset-sub-type`    | GET `/` (list), GET `/{id}`, GET `/query?name=NAME`, GET `/by-asset-type/{assetTypeId}`, POST `/`, DELETE `/{id}` |
+| Categories               | `/asset/category`                | CRUD (similar pattern) |
+| Asset contributions      | `/asset/contribution`            | GET `/` (list), GET `/{id}`, GET `/asset/{assetId}`, POST `/`, PUT `/{id}`, DELETE `/{id}` |
+| Investments contribution | `/asset/investments-contribution`| GET `/` (list), GET `/{id}`, POST `/`, PUT `/{id}`, DELETE `/{id}` |
+| Reports                  | `/asset/report`                  | `GET /asset/report/accounting` — accounting report data |
 
 Responses use standard HTTP status codes (200, 201, 204, 400, 404, 500). Not found and validation errors return JSON bodies (e.g. `AssetErrorDetails`).
+
+## Endpoints detail and example payloads
+
+Below are concise descriptions and example cURL commands for the main endpoints that were added/updated.
+
+1) Banks (Master data)
+
+- Base path: `http://localhost:8080/asset/bank`
+- Model: `Bank` — fields: `id`, `bank` (name)
+
+Examples:
+
+- List banks
+  curl -X GET http://localhost:8080/asset/bank
+
+- Get bank by id
+  curl -X GET http://localhost:8080/asset/bank/1
+
+- Find by name
+  curl -X GET "http://localhost:8080/asset/bank/query?bank=MyBank"
+
+- Create bank
+  curl -X POST http://localhost:8080/asset/bank \
+    -H "Content-Type: application/json" \
+    -d '{"bank":"MyBank"}'
+
+- Delete bank
+  curl -X DELETE http://localhost:8080/asset/bank/1
+
+2) AssetType (Master data)
+
+- Base path: `http://localhost:8080/asset/asset-type`
+- Model: `AssetType` — fields: `id`, `name`, `subTypes` (list)
+
+Examples:
+
+- Create asset type
+  curl -X POST http://localhost:8080/asset/asset-type \
+    -H "Content-Type: application/json" \
+    -d '{"name":"Stocks"}'
+
+- Find by name
+  curl -X GET "http://localhost:8080/asset/asset-type/query?name=Stocks"
+
+3) AssetSubType (Master data)
+
+- Base path: `http://localhost:8080/asset/asset-sub-type`
+- Model: `AssetSubType` — fields: `id`, `name`, `assetType` (object with id)
+
+Examples:
+
+- Create sub-type (attach to an existing asset type by id)
+  curl -X POST http://localhost:8080/asset/asset-sub-type \
+    -H "Content-Type: application/json" \
+    -d '{"name":"Small Caps","assetType":{"id":1}}'
+
+- List sub-types for an asset type
+  curl -X GET http://localhost:8080/asset/asset-sub-type/by-asset-type/1
+
+4) Asset (main resource)
+
+- Base path: `http://localhost:8080/asset`
+- Model: `Asset` — salient fields (not exhaustive):
+  - `id`
+  - `asset` (name)
+  - `quantity` (BigDecimal)
+  - `averagePrice` (BigDecimal)
+  - `quotation` (BigDecimal)
+  - `assetCategory` (object with `id`)
+  - `bank` (object with `id`)  <-- include bank as requested
+  - `type` (object with `id`)  <-- AssetType reference
+  - other optional fields: `monthlyContribution`, `valuePreviousMonth`, etc.
+
+Create example (note: relationships are sent as nested objects with `id`):
+
+- Create asset (example with bank and type included)
+  curl -X POST http://localhost:8080/asset \
+    -H "Content-Type: application/json" \
+    -d '{
+      "asset":"ABC",
+      "quantity":10,
+      "averagePrice":100.00,
+      "quotation":105.00,
+      "bank": {"id": 1},
+      "type": {"id": 2},
+      "assetCategory": {"id": 3}
+    }'
+
+- Update asset
+  curl -X PUT http://localhost:8080/asset/1 \
+    -H "Content-Type: application/json" \
+    -d '{"asset":"ABC Updated","quantity":12}'
+
+- Query by name
+  curl -X GET "http://localhost:8080/asset/query?asset=ABC"
+
+5) Asset Contribution (per-asset contributions history)
+
+- Base path: `http://localhost:8080/asset/contribution`
+- Model: `AssetContribution` — fields: `id`, `asset` (object with id), `contributionDate` (yyyy-MM-dd), `value`
+
+Examples:
+
+- Create contribution for an asset
+  curl -X POST http://localhost:8080/asset/contribution \
+    -H "Content-Type: application/json" \
+    -d '{"asset":{"id":1},"contributionDate":"2026-02-26","value":100.00}'
+
+- List all contributions
+  curl -X GET http://localhost:8080/asset/contribution
+
+- List contributions by asset id
+  curl -X GET http://localhost:8080/asset/contribution/asset/1
+
+- Update contribution
+  curl -X PUT http://localhost:8080/asset/contribution/1 \
+    -H "Content-Type: application/json" \
+    -d '{"asset":{"id":1},"contributionDate":"2026-02-26","value":120.00}'
+
+6) Investments Contribution (global contributions)
+
+- Base path: `http://localhost:8080/asset/investments-contribution`
+- Model: `InvestmentsContribution` — fields: `id`, `contributionDate` (yyyy-MM-dd), `value`
+
+Examples:
+
+- Create investments contribution
+  curl -X POST http://localhost:8080/asset/investments-contribution \
+    -H "Content-Type: application/json" \
+    -d '{"contributionDate":"2026-02-26","value":500.00}'
+
+- List all
+  curl -X GET http://localhost:8080/asset/investments-contribution
+
+- Update
+  curl -X PUT http://localhost:8080/asset/investments-contribution/1 \
+    -H "Content-Type: application/json" \
+    -d '{"contributionDate":"2026-02-26","value":600.00}'
+
+- Delete
+  curl -X DELETE http://localhost:8080/asset/investments-contribution/1
 
 ## Documentation and tools
 
@@ -106,9 +241,9 @@ Responses use standard HTTP status codes (200, 201, 204, 400, 404, 500). Not fou
 src/main/java/com/app/financial/investmentassetapp/
 ├── ConsultaAtivoApiApplication.java   # Spring Boot entry point
 ├── config/                            # CORS and other configuration
-├── controller/                         # REST controllers (Asset, Bank, AssetType, AssetSubType, AssetCategory, AssetReport)
+├── controller/                        # REST controllers (Asset, Bank, AssetType, AssetSubType, AssetCategory, AssetReport)
 ├── excpetion/                         # AssetNotFoundException, HandlerError, AssetErrorDetails
-├── external/                           # Quotation API client (QuotationExternal, DTOs)
+├── external/                          # Quotation API client (QuotationExternal, DTOs)
 ├── model/                             # JPA entities (Asset, Bank, AssetType, AssetSubType, AssetCategory, AccountingReportAsset)
 ├── repository/                        # JPA repositories (interfaces + *RepositoryImpl)
 ├── service/                           # Business logic (asset, report, masters)
