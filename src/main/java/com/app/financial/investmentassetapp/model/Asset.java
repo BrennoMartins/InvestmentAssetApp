@@ -48,13 +48,10 @@ public class Asset {
     private BigDecimal value;
 
     @ManyToOne
-    private AssetCategory assetCategory;
-
-    @ManyToOne
     private Bank bank;
 
     @ManyToOne
-    private AssetType type;
+    private AssetSubType subType;
 
     @Column(name="monthly_contribution")
     private BigDecimal monthlyContribution;
