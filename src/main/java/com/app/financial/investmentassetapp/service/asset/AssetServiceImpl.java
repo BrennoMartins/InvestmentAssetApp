@@ -35,13 +35,15 @@ public class AssetServiceImpl{
 
     public void addAssent(Asset asset) {
         asset.setQuantity(asset.getQuantity().setScale(8, RoundingMode.HALF_UP));
-        asset.setQuotation(new QuotationExternal().returnValueQuotationExternal(asset.getAsset()));
+        if(asset.getQuotation() == null){
+            asset.setQuotation(new QuotationExternal().returnValueQuotationExternal(asset.getAsset()));}
         assetRepository.addAsset(new AssetCalculatorImpl().calculatedValues(asset));
     }
 
     public void updateAasset(Asset asset) {
         asset.setQuantity(asset.getQuantity().setScale(8, RoundingMode.HALF_UP));
-        asset.setQuotation(new QuotationExternal().returnValueQuotationExternal(asset.getAsset()));
+        if(asset.getQuotation() == null){
+            asset.setQuotation(new QuotationExternal().returnValueQuotationExternal(asset.getAsset()));}
         assetRepository.updateAsset(new AssetCalculatorImpl().calculatedValues(asset));
     }
 
