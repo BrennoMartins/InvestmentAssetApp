@@ -73,4 +73,11 @@ public class AssetController {
         return ResponseEntity.created(null).build();
     }
 
+    @PostMapping("/create-asset-batch")
+    public ResponseEntity<Asset> createAssetBatch(){
+        assetServiceImpl.createAssetBatch();
+        return ResponseEntity.created(null).build();
+    }
+
+
 }
