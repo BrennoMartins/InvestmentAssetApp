@@ -47,5 +47,18 @@ public class AssetServiceImpl{
         assetRepository.updateAsset(new AssetCalculatorImpl().calculatedValues(asset));
     }
 
+    public void updateAssetQuotation() {
+        List<Asset> listAssets = assetRepository.getAllAsset();
+
+        if (listAssets == null || listAssets.isEmpty()) {
+            return;
+        }
+
+        listAssets.forEach(asset -> {
+            BigDecimal quotation = new QuotationExternal().returnValueQuotationExternal(asset.getAsset());
+            asset.setQuotation(quotation);
+            assetRepository.updateAsset(new AssetCalculatorImpl().calculatedValues(asset));
+        });
+    }
 
 }

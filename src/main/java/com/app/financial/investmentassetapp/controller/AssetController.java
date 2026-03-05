@@ -67,4 +67,10 @@ public class AssetController {
         return ResponseEntity.created(null).build();
     }
 
+    @PostMapping("/update-quotation")
+    public ResponseEntity<Asset> updateQuotationApp(){
+        assetServiceImpl.updateAssetQuotation();
+        return ResponseEntity.created(null).build();
+    }
+
 }

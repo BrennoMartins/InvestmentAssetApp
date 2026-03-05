@@ -17,7 +17,6 @@ public class QuotationExternal {
 
     RestTemplate restTemplate = new RestTemplate();
 
-
     public BigDecimal returnValueQuotationExternal(String nameAsset){
         System.out.println(returnQuotationAsList());
         return returnQuotationAsList().stream()
@@ -27,8 +26,6 @@ public class QuotationExternal {
                 .orElse(BigDecimal.ZERO);
     }
 
-
-
     public List<QuotationDTO> returnQuotationAsList() {
         URI uri = UriComponentsBuilder
                 .fromHttpUrl("http://localhost:8084/app/quotation")
@@ -37,10 +34,7 @@ public class QuotationExternal {
                 .toUri();
 
         QuotationDTO[] array = restTemplate.getForObject(uri, QuotationDTO[].class);
-        return Arrays.asList(array); // transforma em List<QuotationDTO>
+        return Arrays.asList(array);
     }
-
-
-
 
 }
