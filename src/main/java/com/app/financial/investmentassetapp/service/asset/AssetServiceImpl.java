@@ -77,8 +77,6 @@ public class AssetServiceImpl{
                     addAssent(asset);
                 } else {
                     Asset updated = existingAsset.get();
-                    updated.setQuantity(updated.getQuantity().add(asset.getQuantity()).setScale(8, RoundingMode.HALF_UP));
-                    updated.setQuotation(asset.getQuotation());
                     updateAasset(updated);
                 }
             }
