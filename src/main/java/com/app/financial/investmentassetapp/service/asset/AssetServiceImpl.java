@@ -1,6 +1,8 @@
 package com.app.financial.investmentassetapp.service.asset;
 
 import com.app.financial.investmentassetapp.external.QuotationExternal;
+import com.app.financial.investmentassetapp.external.adapter.AssetCsvAdapter;
+import com.app.financial.investmentassetapp.external.calculator.AssetCalculatorImpl;
 import com.app.financial.investmentassetapp.model.Asset;
 import com.app.financial.investmentassetapp.repository.AssetRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,9 @@ public class AssetServiceImpl{
 
     @Autowired
     private AssetRepositoryImpl assetRepository;
+
+    @Autowired
+    private AssetCsvAdapter assetCsvAdapter;
 
     public List<Asset> getAllAsset(){
         return assetRepository.getAllAsset();
@@ -58,6 +63,23 @@ public class AssetServiceImpl{
             BigDecimal quotation = new QuotationExternal().returnValueQuotationExternal(asset.getAsset());
             asset.setQuotation(quotation);
             assetRepository.updateAsset(new AssetCalculatorImpl().calculatedValues(asset));
+        });
+    }
+
+    public void createAssetBatch() {
+        List<Asset> assets = assetCsvAdapter.readAssetBatchFromCsv();
+
+        assets.forEach(asset -> {
+            if (asset != null) {
+                Optional<Asset> existingAsset = getByAsset(asset.getAsset());
+
+                if (existingAsset.isEmpty()) {
+                    addAssent(asset);
+                } else {
+                    Asset updated = existingAsset.get();
+                    updateAasset(updated);
+                }
+            }
         });
     }
 

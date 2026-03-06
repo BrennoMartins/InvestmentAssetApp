@@ -1,4 +1,4 @@
-package com.app.financial.investmentassetapp.service.asset;
+package com.app.financial.investmentassetapp.external.calculator;
 
 import com.app.financial.investmentassetapp.model.Asset;
 
@@ -34,3 +34,4 @@ public class AssetCalculatorImpl implements IAssetCalculator{
         return asset;
     }
 }
+

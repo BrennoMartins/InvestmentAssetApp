@@ -1,4 +1,4 @@
-package com.app.financial.investmentassetapp.service.asset;
+package com.app.financial.investmentassetapp.external.calculator;
 
 import java.math.BigDecimal;
 
@@ -10,3 +10,4 @@ public interface IAssetCalculator {
 
     BigDecimal valueCalculate(BigDecimal quantity, BigDecimal quotation);
 }
+
