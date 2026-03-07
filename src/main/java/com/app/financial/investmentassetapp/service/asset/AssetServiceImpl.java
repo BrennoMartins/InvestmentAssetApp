@@ -48,7 +48,6 @@ public class AssetServiceImpl{
 
     @Transactional
     public void updateAasset(Asset asset) {
-        // Busca o asset existente no banco
         Optional<Asset> existingAssetOpt = assetRepository.getAssetById(asset.getId());
 
         if (existingAssetOpt.isEmpty()) {
@@ -57,7 +56,6 @@ public class AssetServiceImpl{
 
         Asset existingAsset = existingAssetOpt.get();
 
-        // Atualiza os campos do asset existente (gerenciado pelo JPA)
         existingAsset.setAsset(asset.getAsset());
         existingAsset.setQuantity(asset.getQuantity().setScale(8, RoundingMode.HALF_UP));
         existingAsset.setAveragePrice(asset.getAveragePrice());
@@ -102,7 +100,6 @@ public class AssetServiceImpl{
                 if (existingAsset.isEmpty()) {
                     addAssent(asset);
                 } else {
-                    // Copia os valores do CSV para o asset existente
                     Asset updated = existingAsset.get();
                     updated.setQuantity(asset.getQuantity());
                     updated.setAveragePrice(asset.getAveragePrice());
