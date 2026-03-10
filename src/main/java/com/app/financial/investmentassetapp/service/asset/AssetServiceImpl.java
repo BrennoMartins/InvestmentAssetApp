@@ -7,6 +7,7 @@ import com.app.financial.investmentassetapp.model.Asset;
 import com.app.financial.investmentassetapp.repository.AssetRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -45,13 +46,35 @@ public class AssetServiceImpl{
         assetRepository.addAsset(new AssetCalculatorImpl().calculatedValues(asset));
     }
 
+    @Transactional
     public void updateAasset(Asset asset) {
-        asset.setQuantity(asset.getQuantity().setScale(8, RoundingMode.HALF_UP));
+        Optional<Asset> existingAssetOpt = assetRepository.getAssetById(asset.getId());
+
+        if (existingAssetOpt.isEmpty()) {
+            throw new RuntimeException("Asset not found with id: " + asset.getId());
+        }
+
+        Asset existingAsset = existingAssetOpt.get();
+
+        existingAsset.setAsset(asset.getAsset());
+        existingAsset.setQuantity(asset.getQuantity().setScale(8, RoundingMode.HALF_UP));
+        existingAsset.setAveragePrice(asset.getAveragePrice());
+        existingAsset.setBank(asset.getBank());
+        existingAsset.setSubType(asset.getSubType());
+        existingAsset.setMonthlyContribution(asset.getMonthlyContribution());
+        existingAsset.setValuePreviousMonth(asset.getValuePreviousMonth());
+        existingAsset.setMaturation(asset.getMaturation());
+
         if(asset.getQuotation() == null){
-            asset.setQuotation(new QuotationExternal().returnValueQuotationExternal(asset.getAsset()));}
-        assetRepository.updateAsset(new AssetCalculatorImpl().calculatedValues(asset));
+            existingAsset.setQuotation(new QuotationExternal().returnValueQuotationExternal(asset.getAsset()));
+        } else {
+            existingAsset.setQuotation(asset.getQuotation());
+        }
+
+        assetRepository.updateAsset(new AssetCalculatorImpl().calculatedValues(existingAsset));
     }
 
+    @Transactional
     public void updateAssetQuotation() {
         List<Asset> listAssets = assetRepository.getAllAsset();
 
@@ -66,6 +89,7 @@ public class AssetServiceImpl{
         });
     }
 
+    @Transactional
     public void createAssetBatch() {
         List<Asset> assets = assetCsvAdapter.readAssetBatchFromCsv();
 
@@ -77,6 +101,20 @@ public class AssetServiceImpl{
                     addAssent(asset);
                 } else {
                     Asset updated = existingAsset.get();
+                    updated.setQuantity(asset.getQuantity());
+                    updated.setAveragePrice(asset.getAveragePrice());
+                    updated.setQuotation(asset.getQuotation());
+                    updated.setBank(asset.getBank());
+                    updated.setSubType(asset.getSubType());
+                    if (asset.getMonthlyContribution() != null) {
+                        updated.setMonthlyContribution(asset.getMonthlyContribution());
+                    }
+                    if (asset.getValuePreviousMonth() != null) {
+                        updated.setValuePreviousMonth(asset.getValuePreviousMonth());
+                    }
+                    if (asset.getMaturation() != null) {
+                        updated.setMaturation(asset.getMaturation());
+                    }
                     updateAasset(updated);
                 }
             }
