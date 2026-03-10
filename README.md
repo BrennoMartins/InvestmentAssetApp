@@ -264,7 +264,24 @@ Examples:
   ```bash
   curl -X DELETE http://localhost:8080/asset/investments-contribution/1
   ```
+## Reports API
 
+### GET `/reports/assets/by-type`
+
+Retorna o valor total dos ativos agrupado por tipo de ativo (`AssetType`).
+
+#### Response `200 OK`
+```json
+[
+  {
+    "assetTypeName": "Renda Fixa",
+    "totalValue": 15000.50
+  },
+  {
+    "assetTypeName": "Renda Variavel",
+    "totalValue": 32000.00
+  }
+]
 ## Documentation and tools
 
 - **Swagger UI:** [http://localhost:8080/asset/swagger-ui.html](http://localhost:8080/asset/swagger-ui.html) (or `/asset/swagger-ui/index.html`)
