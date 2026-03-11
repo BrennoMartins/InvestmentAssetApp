@@ -4,10 +4,7 @@ import com.app.financial.investmentassetapp.external.dto.AssetSubTypeValueReport
 import com.app.financial.investmentassetapp.external.dto.AssetTypeValueReportDto;
 import com.app.financial.investmentassetapp.service.AssetReportService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,13 +27,16 @@ public class AssetReportController {
         return ResponseEntity.ok(report);
     }
 
-    @GetMapping("/by-sub-type/{id}")
-    public ResponseEntity<List<AssetSubTypeValueReportDto>> getSumBySubType(@PathVariable Long id) {
+    @GetMapping("/by-sub-type")
+    public ResponseEntity<List<AssetSubTypeValueReportDto>> getSumBySubType(
+            @RequestParam(required = false) Long id) {
         List<AssetSubTypeValueReportDto> report = assetReportService.getAssetSubTypeValueReport(id);
         if (report.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(report);
     }
+
+
 }
 

@@ -6,6 +6,7 @@ import com.app.financial.investmentassetapp.repository.IAssetRespository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AssetReportService {
@@ -21,7 +22,8 @@ public class AssetReportService {
     }
 
     public List<AssetSubTypeValueReportDto> getAssetSubTypeValueReport(Long assetTypeId) {
-        return assetRespository.findAssetSubTypeValueReport(assetTypeId);
+        return Optional.ofNullable(assetTypeId)
+                .map(assetRespository::findAssetSubTypeValueReport)
+                .orElseGet(assetRespository::findAllAssetSubTypeValueReport);
     }
 }
-

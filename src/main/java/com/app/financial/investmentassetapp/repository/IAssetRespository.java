@@ -46,5 +46,18 @@ public interface IAssetRespository extends JpaRepository<Asset, Long> {
     List<AssetSubTypeValueReportDto> findAssetSubTypeValueReport(Long assetTypeId);
 
 
+    @Query("""    
+            select new com.app.financial.investmentassetapp.external.dto.AssetSubTypeValueReportDto(
+                st.name,
+                coalesce(sum(a.value), 0)
+            )
+            from Asset a
+            join a.subType st
+            join st.assetType at
+            group by st.name
+            order by st.name
+            """)
+    List<AssetSubTypeValueReportDto> findAllAssetSubTypeValueReport();
+
 
 }
