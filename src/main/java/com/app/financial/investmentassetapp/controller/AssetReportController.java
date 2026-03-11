@@ -2,6 +2,7 @@ package com.app.financial.investmentassetapp.controller;
 
 import com.app.financial.investmentassetapp.external.dto.AssetSubTypeValueReportDto;
 import com.app.financial.investmentassetapp.external.dto.AssetTypeValueReportDto;
+import com.app.financial.investmentassetapp.external.dto.AssetValueReportDto;
 import com.app.financial.investmentassetapp.service.AssetReportService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,18 @@ public class AssetReportController {
         }
         return ResponseEntity.ok(report);
     }
+
+    @GetMapping("{subTypeId}/by-sub-type")
+    public ResponseEntity<List<AssetValueReportDto>> getAssetSumBySubType(@PathVariable Long subTypeId) {
+        List<AssetValueReportDto> report = assetReportService.findAssetBySubTypeValueReport(subTypeId);
+        if (report.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(report);
+    }
+
+
+
 
 
 }

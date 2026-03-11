@@ -2,6 +2,7 @@ package com.app.financial.investmentassetapp.service;
 
 import com.app.financial.investmentassetapp.external.dto.AssetSubTypeValueReportDto;
 import com.app.financial.investmentassetapp.external.dto.AssetTypeValueReportDto;
+import com.app.financial.investmentassetapp.external.dto.AssetValueReportDto;
 import com.app.financial.investmentassetapp.repository.IAssetRespository;
 import org.springframework.stereotype.Service;
 
@@ -25,5 +26,9 @@ public class AssetReportService {
         return Optional.ofNullable(assetTypeId)
                 .map(assetRespository::findAssetSubTypeValueReport)
                 .orElseGet(assetRespository::findAllAssetSubTypeValueReport);
+    }
+
+    public List<AssetValueReportDto> findAssetBySubTypeValueReport(Long assetSubTypeId) {
+        return assetRespository.findAssetBySubTypeValueReport(assetSubTypeId);
     }
 }

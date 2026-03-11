@@ -1,6 +1,7 @@
 package com.app.financial.investmentassetapp.repository;
 
 import com.app.financial.investmentassetapp.external.dto.AssetSubTypeValueReportDto;
+import com.app.financial.investmentassetapp.external.dto.AssetValueReportDto;
 import com.app.financial.investmentassetapp.model.Asset;
 import com.app.financial.investmentassetapp.external.dto.AssetTypeValueReportDto;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -33,6 +34,7 @@ public interface IAssetRespository extends JpaRepository<Asset, Long> {
 
     @Query("""    
             select new com.app.financial.investmentassetapp.external.dto.AssetSubTypeValueReportDto(
+                st.id,
                 st.name,
                 coalesce(sum(a.value), 0)
             )
@@ -40,7 +42,7 @@ public interface IAssetRespository extends JpaRepository<Asset, Long> {
             join a.subType st
             join st.assetType at
             where at.id = :assetTypeId
-            group by st.name
+            group by st.id, st.name
             order by st.name
             """)
     List<AssetSubTypeValueReportDto> findAssetSubTypeValueReport(Long assetTypeId);
@@ -48,16 +50,29 @@ public interface IAssetRespository extends JpaRepository<Asset, Long> {
 
     @Query("""    
             select new com.app.financial.investmentassetapp.external.dto.AssetSubTypeValueReportDto(
+                st.id,
                 st.name,
                 coalesce(sum(a.value), 0)
             )
             from Asset a
             join a.subType st
             join st.assetType at
-            group by st.name
+            group by st.id, st.name
             order by st.name
             """)
     List<AssetSubTypeValueReportDto> findAllAssetSubTypeValueReport();
+
+    @Query("""
+        select new com.app.financial.investmentassetapp.external.dto.AssetValueReportDto(
+            a.asset,
+            coalesce(sum(a.value), 0)
+        )
+        from Asset a
+        where a.subType.id = :assetSubTypeId
+        group by a.asset
+        order by a.asset
+        """)
+    List<AssetValueReportDto> findAssetBySubTypeValueReport(Long assetSubTypeId);
 
 
 }
