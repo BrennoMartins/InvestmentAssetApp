@@ -33,5 +33,9 @@ public class AssetCalculatorImpl implements IAssetCalculator{
         asset.setValue(valueCalculate(asset.getQuantity(), asset.getQuotation()));
         return asset;
     }
+
+    public BigDecimal calculatedWalletPercent(BigDecimal totalValue, BigDecimal assetValue) {
+        return assetValue.divide(totalValue, 4, RoundingMode.HALF_UP).multiply(new BigDecimal("100"));
+    }
 }
 

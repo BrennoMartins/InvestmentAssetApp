@@ -121,4 +121,21 @@ public class AssetServiceImpl{
         });
     }
 
+    public BigDecimal getTotalAssetValueWithStream() {
+        return assetRepository.getAllAsset().stream()
+                .map(Asset::getValue)
+                .filter(java.util.Objects::nonNull)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+    @Transactional
+    public void updateWalletPercent() {
+        List<Asset> listAssets = assetRepository.getAllAsset();
+        BigDecimal totalValue = getTotalAssetValueWithStream();
+
+        listAssets.forEach(asset -> {
+            asset.setPercentWallet(new AssetCalculatorImpl().calculatedWalletPercent(totalValue, asset.getValue()));
+            assetRepository.updateAsset(asset);
+        });
+    }
+
 }

@@ -79,4 +79,10 @@ public class AssetController {
         return ResponseEntity.created(null).build();
     }
 
+    @PostMapping("/wallet-percent")
+    public ResponseEntity<Asset> updateWalletPercent(){
+        assetServiceImpl.updateWalletPercent();
+        return ResponseEntity.created(null).build();
+    }
+
 }
