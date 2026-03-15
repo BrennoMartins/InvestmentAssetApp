@@ -28,7 +28,7 @@ public interface IAssetRespository extends JpaRepository<Asset, Long> {
             join a.subType st
             join st.assetType at
             group by at.id, at.name
-            order by at.name
+            order by coalesce(sum(a.value), 0) desc
             """)
     List<AssetTypeValueReportDto> findAssetTypeValueReport();
 
@@ -43,7 +43,7 @@ public interface IAssetRespository extends JpaRepository<Asset, Long> {
             join st.assetType at
             where at.id = :assetTypeId
             group by st.id, st.name
-            order by st.name
+            order by coalesce(sum(a.value), 0) desc
             """)
     List<AssetSubTypeValueReportDto> findAssetSubTypeValueReport(Long assetTypeId);
 
@@ -58,7 +58,7 @@ public interface IAssetRespository extends JpaRepository<Asset, Long> {
             join a.subType st
             join st.assetType at
             group by st.id, st.name
-            order by st.name
+            order by coalesce(sum(a.value), 0) desc
             """)
     List<AssetSubTypeValueReportDto> findAllAssetSubTypeValueReport();
 
@@ -70,7 +70,7 @@ public interface IAssetRespository extends JpaRepository<Asset, Long> {
         from Asset a
         where a.subType.id = :assetSubTypeId
         group by a.asset
-        order by a.asset
+        order by coalesce(sum(a.value), 0) desc
         """)
     List<AssetValueReportDto> findAssetBySubTypeValueReport(Long assetSubTypeId);
 
